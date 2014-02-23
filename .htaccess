@@ -1,0 +1,7 @@
+RewriteEngine On
+RewriteBase /web/
+RewriteCond %{REQUEST_FILENAME} !-f [OR]
+RewriteCond %{REQUEST_FILENAME} -l [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^.*$ index.php [QSA,L]
+Deny from 37.9.53.129
