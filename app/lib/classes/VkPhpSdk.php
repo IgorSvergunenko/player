@@ -52,7 +52,7 @@ class VkPhpSdk
 	 */
 	public static $domainMap = array(
 		'api' => 'https://api.vk.com/method/',
-		'www' => 'http://www.vk.com/'
+		'www' => 'https://www.vk.com/'
 	);
 		
 	private $_accessToken;

@@ -1,7 +1,123 @@
 {% extends 'layout.twig' %}
 
 {% block content %}
-    <h1>Hello, world!</h1>
-    <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-{% endblock %}
 
+
+    <div id="searchForm">
+        <div class="col-xs-8">
+            <input type="text" class="form-control"  id="trackName" >
+        </div>
+        <button type="button" id="searchTrack" class="btn btn-primary">Search</button>
+    </div>
+    <div id="player">
+        <audio controls><source src=''></audio>
+    </div>
+
+    <div id="result"></div>
+
+    <style>
+        #searchForm{
+            float: left;
+            width: 50%;
+        }
+        #player{
+            float: right;
+        }
+        #result{
+            margin-top: 50px;
+        }
+        .table_title {
+            text-overflow: ellipsis;
+            display: inline-block;
+            width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            vertical-align: top;
+        }
+        .table_song {
+            text-overflow: ellipsis;
+            display: inline-block;
+            width: 350px;
+            white-space: nowrap;
+            overflow: hidden;
+            vertical-align: top;
+        }
+        .table_play {
+            text-overflow: ellipsis;
+            display: inline-block;
+            width: 50px;
+            white-space: nowrap;
+            overflow: hidden;
+            vertical-align: top;
+        }
+    </style>
+
+    <script>
+        $(function(){
+           $('#searchTrack').click(searchTrack);
+
+            function searchTrack() {
+                var searchValue = $('#trackName').val();
+                $.ajax({
+                    url: "search",
+                    data: {
+                        'searchValue': searchValue
+                    },
+                    type: "POST",
+                    dataType: "json",
+                    success: function(response) {
+
+                        var songs = [];
+
+                        for (var key in response) {
+                            var song = response[key];
+                            songs.push(song)
+                        }
+
+                        var data = {
+                            songs: songs
+                        };
+
+                        $('#result').html('')
+                        $('#result').append('<div id="resultWrapper"></div>')
+
+                        {% raw %}
+                        var template = "<table class='table table-hover'>{{#songs}}" +
+                                "<tr><td class='table_title'>{{artist}}</td>" +
+                                "<td class='table_song'>{{title}}</td>" +
+                                "<td class='table_play'>" +
+                                "<span data-url = {{url}} class='glyphicon glyphicon-play song_url'></span>" +
+                                "</td></tr>" +
+                                "{{/songs}}</table>";
+                        {% endraw %}
+
+                        var html = Mustache.to_html(template, data);
+
+                        $('#resultWrapper').html(html);
+
+                        $('.song_url').click(play);
+                    }
+                })
+            }
+
+            function play() {
+
+                var url = $(this).data('url');
+                var playerEl = document.getElementById("playerEl");
+                if ($(this).hasClass('glyphicon-play')) {
+
+                    $(this).removeClass('glyphicon-play');
+                    $(this).addClass('glyphicon-pause');
+                } else {
+                    playerEl.pause();
+                    $(this).removeClass('glyphicon-pause');
+                    $(this).addClass('glyphicon-play');
+                }
+
+                $('#player').html("<audio id='playerEl' controls autoplay><source src='"+url+"'></source></audio>");
+                audio.play();
+
+            }
+        });
+    </script>
+{% endblock %}

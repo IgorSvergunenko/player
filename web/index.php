@@ -6,12 +6,12 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 require_once __DIR__ . '/../app/IndexController.php';
 require_once __DIR__ . '/../app/AdminController.php';
+require_once __DIR__ . '/../app/Audio.php';
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 define('WEB_PATH', __DIR__);
-define('SAVED_PATH', WEB_PATH . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'saved' . DIRECTORY_SEPARATOR);
 
 $app = new Silex\Application();
 
@@ -31,7 +31,7 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
  * Routes
  */
 $app->get('/', 'App\IndexController::index');
-$app->post('/ajaxTest', 'App\IndexController::ajaxTest');
+$app->post('/search', 'App\IndexController::search');
 $app->get('/about', 'App\IndexController::about');
 $app->get('/contact', 'App\IndexController::contact');
 $app->get('/parameters/{link}/{statId}', 'App\IndexController::parameters');

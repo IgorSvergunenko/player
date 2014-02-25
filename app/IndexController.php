@@ -73,10 +73,21 @@ class IndexController
      * @param Application $app
      * @return Response
      */
-    public function ajaxTest(Request $request, Application $app)
+    public function search(Request $request, Application $app)
     {
-        $data = $request->get('data');
+        $searchValue = $request->get('searchValue');
 
-        return new Response(json_encode($data), 200);
+        try {
+            $audio = new Audio($app);
+            $searchResult = $audio->search($searchValue);
+        } catch(\Exception $e) {
+            $searchResult = $e->getMessage();
+        }
+
+        return new Response(
+            json_encode($searchResult),
+            200
+        );
     }
+
 }
