@@ -8,147 +8,51 @@
         </div>
         <button type="button" id="searchTrack" class="btn btn-primary">Search</button>
     </div>
+
     <div id="player">
         <div class="audio-player">
             <h1 id="song-name">No Song</h1>
             <img class="cover" src="/web/images/cover.png" alt="">
             <audio id="audio-player" src="empty" type="audio/mp3" controls="controls"></audio>
-            <input type='hidden' id='currentSongNumber' value='0'>
+            <input type='hidden' id='currentSongNumber' value='1'>
         </div><br>
     </div>
-    <div class='audioWrapper'></div>
 
+    <div class='audioWrapper'></div>
     <div id="result"></div>
 
+    <script src="/web/js/player.js"></script>
     <script>
-        $(function(){
-           var  player;
-            $('#audio-player').mediaelementplayer({
-                alwaysShowControls: true,
-                features: ['playpause','volume','progress'],
-                audioVolume: 'horizontal',
-                audioWidth: 400,
-                audioHeight: 120,
-                success: function (mediaElement, domObject) {
-                    player = mediaElement;
-                    mediaElement.addEventListener('ended', function (e) {
-                        var currentSongNumber = $('#currentSongNumber').val()
-                        getNextSong(currentSongNumber);
-                        mediaElement.play();
-                    }, false);
-                }
-            });
+        var  playerObj;
 
-            $('#searchTrack').click(searchTrack);
-            $('#trackName').keypress(function(e) {
-                if (e.which==13) {
-                    searchTrack();
-                }
-            });
-
-            function searchTrack() {
-                var searchValue = $('#trackName').val();
-                $.ajax({
-                    url: "search",
-                    data: {
-                        'searchValue': searchValue
-                    },
-                    type: "POST",
-                    dataType: "json",
-                    success: function(response) {
-
-                        var songs = [];
-
-                        for (var key in response) {
-                            var song = response[key];
-                            songs.push(song)
-                        }
-
-                        var data = {
-                            songs: songs
-                        };
-
-                        $('#result').html('')
-                        $('#result').append('<div id="resultWrapper"></div>')
-
-                        {% raw %}
-                        var template = "<table id='allSongs' class='table table-hover'>{{#songs}}" +
-                            "<tr><td class='table_title'>{{artist}}</td>" +
-                            "<td class='table_song'>{{title}}</td>" +
-                            "<td class='table_play'>" +
-                            "<span data-url = {{url}} class='glyphicon glyphicon-plus song_url'></span>" +
-                            "<span data-url = {{url}} class='glyphicon glyphicon-download song_url_download'></span>" +
-                            "</td></tr>" +
-                            "{{/songs}}</table>";
-                        {% endraw %}
-
-                        var html = Mustache.to_html(template, data);
-
-                        $('#resultWrapper').html(html);
-
-                        $('.song_url').click(play);
-                        $('.song_url_download').click(play);
-                    }
-                })
+        function displaySongs(response) {
+            var songs = [];
+            for (var key in response) {
+                var song = response[key];
+                songs.push(song)
             }
+            var data = {
+                songs: songs
+            };
+            $('#result').html('')
+            $('#result').append('<div id="resultWrapper"></div>')
 
-            function play() {
+            {% raw %}
+            var template = "<table id='allSongs' class='table table-hover'>{{#songs}}" +
+                    "<tr><td class='table_title'>{{artist}}</td>" +
+                    "<td class='table_song'>{{title}}</td>" +
+                    "<td class='table_play'>" +
+                    "<span data-url = {{url}} class='glyphicon glyphicon-plus song_url'></span>" +
+                    "<span data-url = {{url}} class='glyphicon glyphicon-download song_url_download'></span>" +
+                    "</td></tr>" +
+                    "{{/songs}}</table>";
+            {% endraw %}
 
-                var url = $(this).data('url');
+            var html = Mustache.to_html(template, data);
+            $('#resultWrapper').html(html);
 
-                var songArtist = $(this).parents('tr').find('.table_title').text();
-                var songName = $(this).parents('tr').find('.table_song').text();
-                var currentSong = $('#audio-player').attr('src');
-
-                if (currentSong == 'empty') {
-                    $('#song-name').html(songArtist + " - " + songName);
-                    $('#audio-player').attr('src', url);
-                    player.play()
-                    return;
-                }
-
-
-                // Add song in to playlist
-                var number = $('#player .audioWrapper:last').attr('id');
-                if (number == undefined) {
-                    number = 0;
-                }
-                number++;
-                var audioElement = "<div class='audioWrapper' id='" + number + "'>"
-                        + "<span class='table_song'>" + songArtist + " - " + songName + "</span>"
-                        + "<input type='hidden' class='songUrl' value='"+url+"'>"
-                        + "<span class='glyphicon audio glyphicon-play'></span>"
-                        + "<span class='glyphicon audio glyphicon-remove'></span></div>";
-                $('#player').append(audioElement);
-
-                // Play song from playlist
-                $('.glyphicon-play').click(function() {
-                    var number = $(this).parents('.audioWrapper').attr('id');
-                    var songName = $(this).parents('.audioWrapper').find('.table_song').text();
-                    var currentSong = $(this).parents('.audioWrapper').find('.songUrl').val();
-                    $('#song-name').html(songName);
-                    $('#audio-player').attr('src', currentSong);
-                    $('#currentSongNumber').val(number);
-                    player.play()
-                });
-
-                // Remove song from playlist
-                $('.glyphicon-remove').click(function() {
-                    $(this).parents('div.audioWrapper').remove()
-                });
-            }
-
-            //
-            function getNextSong(nextSongNumber) {
-                nextSongNumber++;
-                var songName = $('#' + nextSongNumber + ' .table_song').html();
-                var src = $('#' + nextSongNumber + ' .songUrl').val();
-
-                $('#song-name').html(songName);
-                $('#audio-player').attr('src', src);
-                $('#currentSongNumber').val(nextSongNumber);
-                return;
-            }
-        });
+            $('.song_url').click(player.playSong);
+            $('.song_url_download').click(player.playSong);
+        }
     </script>
 {% endblock %}

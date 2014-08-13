@@ -45,28 +45,6 @@ class IndexController
     }
 
     /**
-     * Get request with parameters
-     *
-     * @param Request $request
-     * @param Application $app
-     * @return mixed
-     */
-    public function parameters(Request $request, Application $app)
-    {
-        $link = $request->get('link');
-        $statId = $request->get('statId');
-
-        return $app['twig']->render(
-            'parameters.twig',
-            array(
-                'link' => $link,
-                'statId' => $statId
-            )
-        );
-
-    }
-
-    /**
      * Json response
      *
      * @param Request $request
