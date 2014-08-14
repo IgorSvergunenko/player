@@ -2,26 +2,27 @@
 
 {% block content %}
 
-    <div id="searchForm">
+
+    <div id="searchForm" style="width: 60%">
         <div class="col-xs-8">
             <input type="text" class="form-control"  id="trackName" >
         </div>
-        <button type="button" id="searchTrack" class="btn btn-primary">Search</button>
+        <button type="button" id="searchTrack" class="btn btn-primary">Поиск</button>
     </div>
 
-    <button type="button" id="cleanPlayList" class="btn btn-danger">Clean play list</button>
-    <div id="player">
+    <div id="player" style="width: 35%; min-width: 400px;">
         <div class="audio-player">
-            <h1 id="song-name">No Song</h1>
+            <h1 id="song-name">Не выбрано</h1>
             <img class="cover" src="/web/images/cover.png" alt="">
             <audio id="audio-player" src="empty" type="audio/mp3" controls="controls"></audio>
             <input type='hidden' id='currentSongNumber' value='0'>
         </div><br>
+        <button type="button" id="cleanPlayList" class="btn btn-danger">Очистить плей-лист</button>
+        <br><br>
         <ul id="playList" class="list-group"></ul>
     </div>
 
-    <div class='audioWrapper'></div>
-    <div id="result"></div>
+    <div id="result" style="width: 60%"></div>
 
     <script src="/web/js/player.js"></script>
     <script>

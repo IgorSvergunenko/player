@@ -31,7 +31,7 @@ ul#playList li{
 .table_title {
     text-overflow: ellipsis;
     display: inline-block;
-    width: 200px;
+    width: 30%;
     white-space: nowrap;
     overflow: hidden;
     vertical-align: top;
@@ -39,7 +39,7 @@ ul#playList li{
 .table_song {
     text-overflow: ellipsis;
     display: inline-block;
-    width: 290px;
+    width: 55%;
     white-space: nowrap;
     overflow: hidden;
     vertical-align: top;
@@ -47,7 +47,7 @@ ul#playList li{
 .table_play {
     text-overflow: ellipsis;
     display: inline-block;
-    width: 50px;
+    width: 15%;
     white-space: nowrap;
     overflow: hidden;
     vertical-align: top;
