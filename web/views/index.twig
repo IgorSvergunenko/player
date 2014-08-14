@@ -9,13 +9,15 @@
         <button type="button" id="searchTrack" class="btn btn-primary">Search</button>
     </div>
 
+    <button type="button" id="cleanPlayList" class="btn btn-danger">Clean play list</button>
     <div id="player">
         <div class="audio-player">
             <h1 id="song-name">No Song</h1>
             <img class="cover" src="/web/images/cover.png" alt="">
             <audio id="audio-player" src="empty" type="audio/mp3" controls="controls"></audio>
-            <input type='hidden' id='currentSongNumber' value='1'>
+            <input type='hidden' id='currentSongNumber' value='0'>
         </div><br>
+        <ul id="playList" class="list-group"></ul>
     </div>
 
     <div class='audioWrapper'></div>

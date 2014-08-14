@@ -50,6 +50,7 @@ class Audio
         );
 
         $songs = array();
+
         if (!empty($resp['response'])) {
             unset($resp['response'][0]);
             foreach ($resp['response'] as $song) {

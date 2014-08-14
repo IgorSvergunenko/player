@@ -3,9 +3,10 @@ var player = {
     init: function() {
 
         $('#searchTrack').click(player.searchTrack);
+        $('#cleanPlayList').click(player.cleanPlayList);
         $('#trackName').keypress(function(e) {
             if (e.which==13) {
-                searchTrack();
+                player.searchTrack();
             }
         });
 
@@ -20,11 +21,25 @@ var player = {
                 mediaElement.addEventListener('ended', function (e) {
                     var currentSongNumber = $('#currentSongNumber').val()
                     player.getNextSong(currentSongNumber);
-                    mediaElement.play();
+                    player.play(mediaElement);
                 }, false);
             }
         });
+    },
 
+    cleanPlayList: function(mediaElement) {
+        $('ul#playList').empty();
+        $('#song-name').html('No song');
+        $('#audio-player').attr('src', 'empty');
+        $('#currentSongNumber').val('0');
+    },
+
+    play: function(mediaElement) {
+        mediaElement.play();
+        var currentSongNumber = $('#currentSongNumber').val();
+        $('.playAction').removeClass('glyphicon-pause');
+        $('.playAction').addClass('glyphicon-play');
+        $('ul#playList li:eq(' +currentSongNumber+ ')'+' .playAction').addClass('glyphicon-pause');
     },
 
     // search songs and show on page
@@ -46,40 +61,49 @@ var player = {
     },
 
     addToPlayList: function(songArtist, songName, url) {
-        var number = $('#player .audioWrapper:last').attr('id');
-        if (number == undefined) {
-            number = 0;
-        }
-        number++;
-        var audioElement = "<div class='audioWrapper' id='" + number + "'>"
-            + "<span class='table_song'>" + songArtist + " - " + songName + "</span>"
-            + "<input type='hidden' class='songUrl' value='"+url+"'>"
-            + "<span class='glyphicon audio glyphicon-play'></span>"
-            + "<span class='glyphicon audio glyphicon-remove'></span></div>";
-        $('#player').append(audioElement);
+
+        var songName = songArtist + " - " + songName;
+
+        $('#playList').append(
+            "<li>" +
+            "<span class='table_song'>" + songName + "</span> " +
+            "<input type='hidden' class='songUrl' value='"+url+"'>" +
+            "<span class='playAction glyphicon audio glyphicon-play'></span>" +
+            "<span class='glyphicon audio glyphicon-remove'></span>" +
+            "</li>"
+        );
 
         // Play song from playlist
         $('.glyphicon-play').click(function() {
-            var number = $(this).parents('.audioWrapper').attr('id');
-            var songName = $(this).parents('.audioWrapper').find('.table_song').text();
-            var currentSong = $(this).parents('.audioWrapper').find('.songUrl').val();
+            var selectedSongEl = $(this).parents('li');
+            var number = $(selectedSongEl).index();
+
+            var songName = $(selectedSongEl).find('.table_song').text();
+            var currentSong = $(selectedSongEl).find('.songUrl').val();
             $('#song-name').html(songName);
             $('#audio-player').attr('src', currentSong);
             $('#currentSongNumber').val(number);
-            playerObj.play()
+            player.play(playerObj);
         });
 
         // Remove song from playlist
         $('.glyphicon-remove').click(function() {
-            $(this).parents('div.audioWrapper').remove()
+            $(this).parents('li').remove()
         });
     },
 
     getNextSong: function(nextSongNumber) {
         nextSongNumber++;
-        var songName = $('#' + nextSongNumber + ' .table_song').html();
-        var src = $('#' + nextSongNumber + ' .songUrl').val();
 
+        if (nextSongNumber >= $('ul#playList li').length) {
+            //back to the top of playlist
+            nextSongNumber = 0;
+        }
+
+        // get next song from playlist and add to player
+        var selectedSongEl = 'ul#playList li:eq(' +nextSongNumber+ ')';
+        var songName = $(selectedSongEl + ' .table_song').html();
+        var src = $(selectedSongEl + ' .songUrl').val();
         $('#song-name').html(songName);
         $('#audio-player').attr('src', src);
         $('#currentSongNumber').val(nextSongNumber);
@@ -95,8 +119,8 @@ var player = {
             // No songs in playlist, add first
             $('#song-name').html(songArtist + " - " + songName);
             $('#audio-player').attr('src', url);
-            playerObj.play();
             player.addToPlayList(songArtist, songName, url);
+            player.play(playerObj)
             return;
         }
 
