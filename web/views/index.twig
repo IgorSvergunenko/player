@@ -13,13 +13,13 @@
     <div class="col-md-5">
         <div class="audio-player col-md-12">
             <h1 id="song-name">Не выбрано</h1>
-            <img class="cover" src="/web/images/cover.png" alt="">
+            {#<img class="cover" src="/web/images/cover.png" alt="">#}
             <audio id="audio-player" src="empty" type="audio/mp3" controls="controls"></audio>
             <input type='hidden' id='currentSongNumber' value='0'>
         </div><br>
         <div class="col-md-12" style="margin-top: 20px;">
             <button type="button" id="cleanPlayList" class="btn btn-danger">Очистить плей-лист</button><br><br>
-            <ul id="playList" class="list-group" style="width: 90%;"></ul>
+            <ul id="playList" class="list-group" style="width: 100%;"></ul>
         </div>
     </div>
 
@@ -45,7 +45,6 @@
                     "<td class='table_song'>{{title}}</td>" +
                     "<td class='table_play'>" +
                     "<span data-url = {{url}} class='glyphicon glyphicon-plus song_url'></span>" +
-                    "<span data-url = {{url}} class='glyphicon glyphicon-download song_url_download'></span>" +
                     "</td></tr>" +
                     "{{/songs}}</table>";
             {% endraw %}

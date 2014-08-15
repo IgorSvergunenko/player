@@ -1,3 +1,6 @@
+span.audio{
+    float: right;
+}
 #trackName {
     float: left;
     width: 75%;
@@ -42,7 +45,7 @@ ul#playList li{
     text-overflow: ellipsis;
     display: inline-block;
     width: 55%;
-    max-width: 330px;
+    max-width: 370px;
     white-space: nowrap;
     overflow: hidden;
     vertical-align: top;
@@ -50,7 +53,7 @@ ul#playList li{
 .table_play {
     text-overflow: ellipsis;
     display: inline-block;
-    width: 15%;
+    width: 20px;
     white-space: nowrap;
     overflow: hidden;
     vertical-align: top;
@@ -75,7 +78,7 @@ ul#playList li{
 }
 div.audio-player {
     position: relative;
-    width: 400px;
+    /*width: 400px;*/
     height: 120px;
 
     background: #4c4e5a;
@@ -93,7 +96,7 @@ div.audio-player {
 .audio-player h1 {
     position: absolute;
     top: 37px;
-    left: 165px;
+    left: 65px;
 
     font-family: Helvetica, Arial, sans-serif;
     font-weight: bold;
@@ -120,7 +123,7 @@ div.audio-player {
     width: 21px;
     height: 21px;
     top: 35px;
-    left: 135px;
+    left: 35px;
     background: transparent url(../images/play-pause.png) 0 0;
 }
 
@@ -131,7 +134,7 @@ div.audio-player {
     width: 14px;
     height: 12px;
     top: 70px;
-    left: 140px;
+    left: 40px;
     background: transparent url(../images/mute-unmute.png) 0 0;
 }
 
@@ -140,12 +143,12 @@ div.audio-player {
 .mejs-controls div.mejs-horizontal-volume-slider {
     position: absolute;
     top: 71px;
-    left: 165px;
+    left: 65px;
     cursor: pointer;
 }
 
 .mejs-controls .mejs-horizontal-volume-slider .mejs-horizontal-volume-total {
-    width: 200px;
+    width: 150px;
     height: 8px;
     background: #212227;
 
@@ -163,7 +166,7 @@ div.audio-player {
 .mejs-controls .mejs-time-rail span {
     position: absolute;
     display: block;
-    width: 400px;
+    width: 100%;
     height: 5px;
     left: 0;
     bottom: 0;

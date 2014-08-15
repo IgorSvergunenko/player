@@ -64,15 +64,6 @@ var player = {
 
         var songName = songArtist + " - " + songName;
 
-        $('#playList').append(
-            "<li>" +
-            "<span class='table_song'>" + songName + "</span> " +
-            "<input type='hidden' class='songUrl' value='"+url+"'>" +
-            "<span class='playAction glyphicon audio glyphicon-play'></span>" +
-            "<span class='glyphicon audio glyphicon-remove'></span>" +
-            "</li>"
-        );
-
         // Play song from playlist
         $('.glyphicon-play').click(function() {
             var selectedSongEl = $(this).parents('li');
@@ -85,6 +76,15 @@ var player = {
             $('#currentSongNumber').val(number);
             player.play(playerObj);
         });
+
+        $('#playList').append(
+            "<li>" +
+                "<span class='table_song'>" + songName + "</span> " +
+                "<input type='hidden' class='songUrl' value='"+url+"'>" +
+                "<span class='glyphicon audio glyphicon-remove'></span>" +
+                "<span class='playAction glyphicon audio glyphicon-play'></span>" +
+                "</li>"
+        );
 
         // Remove song from playlist
         $('.glyphicon-remove').click(function() {
