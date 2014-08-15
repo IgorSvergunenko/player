@@ -2,27 +2,27 @@
 
 {% block content %}
 
-
-    <div id="searchForm" style="width: 60%">
-        <div class="col-xs-8">
-            <input type="text" class="form-control"  id="trackName" >
+    <div class="col-md-7">
+        <div id="searchForm" class="col-md-12">
+            <input type="text" class="form-control col-md-12"  id="trackName" >
+            <button type="button" id="searchTrack" class="btn btn-primary">Поиск</button>
         </div>
-        <button type="button" id="searchTrack" class="btn btn-primary">Поиск</button>
+        <div id="result" class="col-md-12"></div>
     </div>
 
-    <div id="player" style="width: 35%; min-width: 400px;">
-        <div class="audio-player">
+    <div class="col-md-5">
+        <div class="audio-player col-md-12">
             <h1 id="song-name">Не выбрано</h1>
             <img class="cover" src="/web/images/cover.png" alt="">
             <audio id="audio-player" src="empty" type="audio/mp3" controls="controls"></audio>
             <input type='hidden' id='currentSongNumber' value='0'>
         </div><br>
-        <button type="button" id="cleanPlayList" class="btn btn-danger">Очистить плей-лист</button>
-        <br><br>
-        <ul id="playList" class="list-group"></ul>
+        <div class="col-md-12" style="margin-top: 20px;">
+            <button type="button" id="cleanPlayList" class="btn btn-danger">Очистить плей-лист</button><br><br>
+            <ul id="playList" class="list-group" style="width: 90%;"></ul>
+        </div>
     </div>
 
-    <div id="result" style="width: 60%"></div>
 
     <script src="/web/js/player.js"></script>
     <script>
@@ -38,7 +38,6 @@
                 songs: songs
             };
             $('#result').html('')
-            $('#result').append('<div id="resultWrapper"></div>')
 
             {% raw %}
             var template = "<table id='allSongs' class='table table-hover'>{{#songs}}" +
@@ -52,7 +51,7 @@
             {% endraw %}
 
             var html = Mustache.to_html(template, data);
-            $('#resultWrapper').html(html);
+            $('#result').html(html);
 
             $('.song_url').click(player.playSong);
             $('.song_url_download').click(player.playSong);

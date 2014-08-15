@@ -1,3 +1,8 @@
+#trackName {
+    float: left;
+    width: 75%;
+    margin-right: 20px;
+}
 ul#playList{
     list-style: none;
     border-style: solid;
@@ -6,7 +11,7 @@ ul#playList{
     padding-left: 15px;
 }
 span.table_song{
-    width: 90%;
+    width: 85%;
     max-width: 340px;
 }
 ul#playList li{
@@ -14,10 +19,6 @@ ul#playList li{
     border-bottom-width: 1px;
     border-bottom-style: dotted;
     padding-bottom: 5px;
-}
-#searchForm{
-    float: left;
-    width: 50%;
 }
 #player{
     float: right;
@@ -32,6 +33,7 @@ ul#playList li{
     text-overflow: ellipsis;
     display: inline-block;
     width: 30%;
+    max-width: 200px;
     white-space: nowrap;
     overflow: hidden;
     vertical-align: top;
@@ -40,6 +42,7 @@ ul#playList li{
     text-overflow: ellipsis;
     display: inline-block;
     width: 55%;
+    max-width: 330px;
     white-space: nowrap;
     overflow: hidden;
     vertical-align: top;
