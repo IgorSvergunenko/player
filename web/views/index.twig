@@ -18,11 +18,53 @@
             <input type='hidden' id='currentSongNumber' value='0'>
         </div><br>
         <div class="col-md-12" style="margin-top: 20px;">
-            <button type="button" id="cleanPlayList" class="btn btn-danger">Очистить плей-лист</button><br><br>
+            <button type="button" id="cleanPlayList" class="btn btn-danger">Очистить</button>
+            <button type="button" id="savePlayList" class="btn btn-primary" data-toggle="modal" data-target="#saveModal">Сохранить</button>
+            <button type="button" id="loadPlayList" class="btn btn-default" data-toggle="modal" data-target="#loadModal">Загрузить</button><br><br>
             <ul id="playList" class="list-group" style="width: 100%;"></ul>
         </div>
     </div>
 
+    <div class="modal fade" id="loadModal" tabindex="-1" role="dialog" aria-labelledby="loadModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Отмена</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Загрузить плей-лист</h4>
+                </div>
+                <div class="modal-body">
+                    <select class="form-control" id="playLists">
+                        {% for playList in playLists %}
+                            <option value="{{ playList.id }}">{{ playList.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <br>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+                    <button type="button" class="btn btn-primary" id="loadPlayListSongs">Загрузить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="saveModal" tabindex="-1" role="dialog" aria-labelledby="saveModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Отмена</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Сохранить плей-лист</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="form-control col-md-12" placeholder="Введите название плей-листа" id="playListName" ><br>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+                    <button type="button" class="btn btn-primary" id="savePlayListName">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="/web/js/player.js"></script>
     <script>

@@ -4,6 +4,9 @@ var player = {
 
         $('#searchTrack').click(player.searchTrack);
         $('#cleanPlayList').click(player.cleanPlayList);
+        $('#savePlayListName').click(player.savePlayList);
+        $('#loadPlayListSongs').click(player.loadPlayList);
+
         $('#trackName').keypress(function(e) {
             if (e.which==13) {
                 player.searchTrack();
@@ -23,6 +26,67 @@ var player = {
                     player.getNextSong(currentSongNumber);
                     player.play(mediaElement);
                 }, false);
+            }
+        });
+    },
+
+    loadPlayList: function() {
+
+        var playListId = $("#playLists").val();
+
+        $.ajax({
+            url: "getList",
+            data: {
+                'playListId': playListId
+            },
+            type: "GET",
+            dataType: "json",
+            success: function(response) {
+
+                player.cleanPlayList()
+
+                $.each(response, function(index, song) {
+                    player.addToPlayList(song.title, song.link);
+                });
+
+                player.getNextSong(-1);
+                player.play(playerObj);
+
+                $('#loadModal').modal('hide')
+            }
+        });
+
+    },
+
+    savePlayList: function() {
+        var playlist = $('ul#playList li');
+        var songs = [];
+
+        var playListName = $('#playListName').val();
+
+        if (playListName.length == 0 || playlist.length == 0) {
+            $('#errorSaveMessage').text('')
+            return;
+        }
+
+
+        $.each(playlist, function(index, el) {
+            songs.push({
+                'title': $(el).find('.table_song').text(),
+                'link': $(el).find('.songUrl').val()
+            });
+        });
+
+        $.ajax({
+            url: "saveList",
+            data: {
+                'playListName': playListName,
+                'songs': songs
+            },
+            type: "POST",
+            dataType: "json",
+            success: function(response) {
+                $('#saveModal').modal('hide')
             }
         });
     },
@@ -60,9 +124,7 @@ var player = {
         });
     },
 
-    addToPlayList: function(songArtist, songName, url) {
-
-        var songName = songArtist + " - " + songName;
+    addToPlayList: function(songName, url) {
 
         // Play song from playlist
         $('.glyphicon-play').click(function() {
@@ -119,13 +181,13 @@ var player = {
             // No songs in playlist, add first
             $('#song-name').html(songArtist + " - " + songName);
             $('#audio-player').attr('src', url);
-            player.addToPlayList(songArtist, songName, url);
+            player.addToPlayList(songArtist + " - " + songName, url);
             player.play(playerObj)
             return;
         }
 
         // Add song in to playlist
-        player.addToPlayList(songArtist, songName, url);
+        player.addToPlayList(songArtist + " - " + songName, url);
     }
 
 }
