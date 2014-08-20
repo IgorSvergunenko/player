@@ -50,13 +50,21 @@ class PlayListModel
         return $songs;
     }
 
-    public function savePlayList($title, $songs)
+    public function savePlayList($title, $songs, $userId = 1)
     {
         if (empty($songs) || empty($title))
             return '';
 
-        $this->db->insert('play_lists', ['name' => $title, 'date' => date('Y-m-d H:i:s'), 'userId' => 1]);
-        $playListId = $this->db->lastInsertId();
+        $sql = "SELECT * FROM play_lists WHERE name = ? AND userId = ?";
+        $playListData = $this->db->fetchAll($sql, array($title, $userId));
+
+        if (isset($playListData[0]['id'])) {
+            $playListId = $playListData[0]['id'];
+            $this->db->delete('play_list_songs', ['playListId' => $playListData[0]['id']]);
+        } else {
+            $this->db->insert('play_lists', ['name' => $title, 'date' => date('Y-m-d H:i:s'), 'userId' => 1]);
+            $playListId = $this->db->lastInsertId();
+        }
 
         foreach($songs as $song) {
             $id = $this->getSongId($song);

@@ -1,7 +1,7 @@
 var player = {
 
     init: function() {
-
+        player.validateList();
         $('#searchTrack').click(player.searchTrack);
         $('#cleanPlayList').click(player.cleanPlayList);
         $('#savePlayListName').click(player.savePlayList);
@@ -28,6 +28,16 @@ var player = {
                 }, false);
             }
         });
+    },
+
+    validateList: function() {
+        var playListSongs = $('ul#playList li').length;
+
+        if (playListSongs == 0) {
+            $('#savePlayList').addClass('disabled');
+        } else {
+            $('#savePlayList').removeClass('disabled');
+        }
     },
 
     loadPlayList: function() {
@@ -64,11 +74,11 @@ var player = {
 
         var playListName = $('#playListName').val();
 
-        if (playListName.length == 0 || playlist.length == 0) {
-            $('#errorSaveMessage').text('')
+        if (playListName == 0) {
+            var textbox = $("#playListName");
+            textbox.css('border-color', '#a94442');
             return;
         }
-
 
         $.each(playlist, function(index, el) {
             songs.push({
@@ -93,7 +103,7 @@ var player = {
 
     cleanPlayList: function(mediaElement) {
         $('ul#playList').empty();
-        $('#song-name').html('No song');
+        $('#song-name').html('Не выбрано');
         $('#audio-player').attr('src', 'empty');
         $('#currentSongNumber').val('0');
     },
@@ -126,7 +136,15 @@ var player = {
 
     addToPlayList: function(songName, url) {
 
-        // Play song from playlist
+        $('#playList').append(
+            "<li>" +
+                "<span class='table_song'>" + songName + "</span> " +
+                "<input type='hidden' class='songUrl' value='"+url+"'>" +
+                "<span class='glyphicon audio glyphicon-remove'></span>" +
+                "<span class='playAction glyphicon audio glyphicon-play'></span>" +
+                "</li>"
+        );
+
         $('.glyphicon-play').click(function() {
             var selectedSongEl = $(this).parents('li');
             var number = $(selectedSongEl).index();
@@ -137,21 +155,15 @@ var player = {
             $('#audio-player').attr('src', currentSong);
             $('#currentSongNumber').val(number);
             player.play(playerObj);
+            player.validateList();
         });
-
-        $('#playList').append(
-            "<li>" +
-                "<span class='table_song'>" + songName + "</span> " +
-                "<input type='hidden' class='songUrl' value='"+url+"'>" +
-                "<span class='glyphicon audio glyphicon-remove'></span>" +
-                "<span class='playAction glyphicon audio glyphicon-play'></span>" +
-                "</li>"
-        );
 
         // Remove song from playlist
         $('.glyphicon-remove').click(function() {
             $(this).parents('li').remove()
+            player.validateList();
         });
+        player.validateList();
     },
 
     getNextSong: function(nextSongNumber) {
@@ -169,6 +181,7 @@ var player = {
         $('#song-name').html(songName);
         $('#audio-player').attr('src', src);
         $('#currentSongNumber').val(nextSongNumber);
+        player.validateList();
     },
 
     playSong: function() {

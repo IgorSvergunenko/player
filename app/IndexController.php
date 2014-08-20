@@ -84,6 +84,7 @@ class IndexController
     public function saveList(Request $request, Application $app)
     {
         $playListName = $request->get('playListName');
+        $userId = $request->get('userId', 1);
         $songs = $request->get('songs');
 
         $playListModel = new PlayListModel($app['db']);
