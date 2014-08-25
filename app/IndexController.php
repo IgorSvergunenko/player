@@ -5,7 +5,7 @@ namespace App;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use App\Models\PlayListModel;
+use App\Models\PlayList;
 
 class IndexController
 {
@@ -18,11 +18,12 @@ class IndexController
      */
     public function index(Request $request, Application $app)
     {
-        $playListModel = new PlayListModel($app['db']);
+        $playListModel = new PlayList($app['db']);
         $playLists = $playListModel->getAllPlayLists();
 
         return $app['twig']->render('index.twig', array(
-            'playLists' => $playLists
+            'playLists' => $playLists,
+            'isAdmin' => isset($_COOKIE[$app['auth']['adminCookieName']]) ? true : false
         ));
     }
 
@@ -87,7 +88,7 @@ class IndexController
         $userId = $request->get('userId', 1);
         $songs = $request->get('songs');
 
-        $playListModel = new PlayListModel($app['db']);
+        $playListModel = new PlayList($app['db']);
         $playListModel->savePlayList($playListName, $songs);
 
         return new Response(
@@ -107,11 +108,31 @@ class IndexController
     {
         $playListId = $request->get('playListId');
 
-        $playListModel = new PlayListModel($app['db']);
+        $playListModel = new PlayList($app['db']);
         $songs = $playListModel->getPlayListSongs($playListId);
 
         return new Response(
             json_encode($songs),
+            200
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @param Application $app
+     * @return Response
+     */
+    public function loadSong(Request $request, Application $app)
+    {
+        $url = $request->get('url');
+        $name = $request->get('name');
+
+        header("Content-type: application/x-file-to-save");
+        header("Content-Disposition: attachment; filename=$name.mp3");
+        readfile($url);
+
+        return new Response(
+            json_encode(''),
             200
         );
     }

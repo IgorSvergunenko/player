@@ -7,7 +7,7 @@
 
 namespace App\Models;
 
-class PlayListModel
+class PlayList
 {
     /**
      * @var

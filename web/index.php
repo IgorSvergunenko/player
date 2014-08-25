@@ -4,9 +4,11 @@ date_default_timezone_set('Europe/Kiev');
 header('Content-Type: text/html;charset=utf-8');
 require_once __DIR__ . '/../vendor/autoload.php';
 
-require_once __DIR__ . '/../app/Models/PlayListModel.php';
+require_once __DIR__ . '/../app/Models/PlayList.php';
+require_once __DIR__ . '/../app/Models/User.php';
 require_once __DIR__ . '/../app/IndexController.php';
 require_once __DIR__ . '/../app/AdminController.php';
+require_once __DIR__ . '/../app/UserController.php';
 require_once __DIR__ . '/../app/Audio.php';
 
 use Symfony\Component\HttpFoundation\Request;
@@ -38,6 +40,7 @@ $app->get('/contact', 'App\IndexController::contact');
 $app->get('/parameters/{link}/{statId}', 'App\IndexController::parameters');
 $app->post('/saveList', 'App\IndexController::saveList');
 $app->get('/getList', 'App\IndexController::getList');
+$app->get('/loadSong', 'App\IndexController::loadSong');
 
 $app->post('/login', 'App\AdminController::login');
 $app->get('/admin', 'App\AdminController::admin');

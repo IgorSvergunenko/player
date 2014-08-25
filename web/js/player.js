@@ -201,6 +201,26 @@ var player = {
 
         // Add song in to playlist
         player.addToPlayList(songArtist + " - " + songName, url);
+    },
+
+    loadSong: function() {
+        var url = $(this).data('url');
+        var songArtist = $(this).parents('tr').find('.table_title').text();
+        var songName = $(this).parents('tr').find('.table_song').text();
+        var fullName = songArtist + ' - ' + songName;
+
+        $.ajax({
+            url: "loadSong",
+            data: {
+                'url': url,
+                'name': fullName
+            },
+            type: "GET",
+            dataType: "json",
+            success: function(response) {
+
+            }
+        });
     }
 
 }

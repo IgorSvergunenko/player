@@ -2,6 +2,80 @@
 
 {% block content %}
 
+    <div class="soc_block" style="position: fixed; left: 184.5px; top: 60px; display: block;">
+        <a class="soc soc_fb s_01" href="http://www.facebook.com/sharer.php?u=www.player.dev" title="Поделиться ссылкой в facebook">
+            <strong><img alt="S_01" src="/images/s_01-fac537214d3eb6464b9e5c3c6355aa7e.png"></strong><span>0</span><em>&nbsp;</em>
+        </a>
+        <a class="soc soc_tw s_02" href="https://twitter.com/intent/tweet?original_referer=http://www.player.dev" title="Поделиться ссылкой в Twitter">
+            <strong><img alt="S_02" src="/images/s_02-58b6166a449bdda4d363136c65239bfa.png"></strong><span>0</span><em>&nbsp;</em>
+        </a>
+        <a class="soc soc_vk s_03" href="http://vk.com/share.php?url=http://www.player.dev" title="Поделиться ссылкой в Vkontakte">
+            <strong><img alt="S_03" src="/images/s_03-bb053a78ba2bf4e43941762b515b8de9.png"></strong><span>0</span><em>&nbsp;</em>
+        </a>
+    </div>
+
+    <style>
+        .soc_block {
+            float: left;
+            width: 40px;
+        }
+        .soc_block .soc {
+            position: relative;
+            float: left;
+            margin-bottom: 10px;
+        }
+        .soc_block a {
+            width: 40px;
+        }
+        .soc_block .soc:hover strong img {
+            margin-top: -38px;
+        }
+        .soc_block .soc strong {
+            display: block;
+            height: 38px;
+            overflow: hidden;
+            border: 1px solid #e6e6e6;
+        }
+        .soc_block .soc span {
+            display: block;
+            height: 20px;
+            background-color: #e6e6e6;
+            font-family: 'ConquerorSansMedium';
+            font-size: 10px;
+            color: #878787;
+            line-height: 20px;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .soc_block .soc em {
+            cursor: pointer;
+            visibility: hidden;
+            position: absolute;
+            left: 0px;
+            bottom: 0px;
+            width: 40px;
+            height: 20px;
+            background-image: url(/images/plus-86234ef878ddd772dc0e7f8e0c59063a.png);
+            background-repeat: no-repeat;
+            background-position: 16px 6px;
+        }
+        .soc_block .soc em {
+            background-color: #5d80a5;
+        }
+        .soc_block .soc:hover em {
+            visibility: visible;
+        }
+    </style>
+
+    {% if isAdmin == false %}
+        <style>
+            .glyphicon-download, #savePlayList, #loadPlayList {
+                display: none;
+            }
+        </style>
+    {% endif %}
+
     <div class="col-md-7">
         <div id="searchForm" class="col-md-12">
             <input type="text" class="form-control col-md-12"  id="trackName" >
@@ -13,7 +87,6 @@
     <div class="col-md-5">
         <div class="audio-player col-md-12">
             <h1 id="song-name">Не выбрано</h1>
-            {#<img class="cover" src="/web/images/cover.png" alt="">#}
             <audio id="audio-player" src="empty" type="audio/mp3" controls="controls"></audio>
             <input type='hidden' id='currentSongNumber' value='0'>
         </div><br>
@@ -87,6 +160,7 @@
                     "<td class='table_song'>{{title}}</td>" +
                     "<td class='table_play'>" +
                     "<span data-url = {{url}} class='glyphicon glyphicon-plus song_url'></span>" +
+                    "<a href='/loadSong?url={{url}}&name={{artist}} - {{title}}'><span data-url = {{url}} class='glyphicon glyphicon-download song_download'></span></a>" +
                     "</td></tr>" +
                     "{{/songs}}</table>";
             {% endraw %}
@@ -95,6 +169,7 @@
             $('#result').html(html);
 
             $('.song_url').click(player.playSong);
+            $('.song_download').click(player.loadSong);
             $('.song_url_download').click(player.playSong);
         }
     </script>
