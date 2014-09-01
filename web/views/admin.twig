@@ -7,16 +7,18 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Silex</title>
+    <title>Player</title>
 
     <script src="/web/js/jquery.js"></script>
     <script src="/web/js/knockout.js"></script>
     <script src="/web/js/knockoutJsGrid.js"></script>
+    <script src="/web/js/bootstrap-datepicker.js"></script>
 
     <!-- Bootstrap core CSS -->
     <link href="/web/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap theme -->
     <link href="/web/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="/web/css/datepicker.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="/web/css/style.css" rel="stylesheet">
@@ -41,23 +43,23 @@
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/">Silex</a>
+            <a class="navbar-brand" href="/">Player</a>
         </div>
-        {% block menu %}
-        {% endblock %}
-
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/pageviews">Pageviews</a></li>
+                <li><a href="/searched">Searched</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </div>
     </div>
 </div>
 
 <div class="container theme-showcase" role="main">
-
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-    {#<div class="jumbotron">#}
         {% block content %}
         {% endblock %}
-    {#</div>#}
-
-
 </div>
 <!-- /container -->
 

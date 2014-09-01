@@ -6,6 +6,7 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\PlayList;
+use App\Models\StatPageViews;
 
 class IndexController
 {
@@ -61,6 +62,9 @@ class IndexController
     public function search(Request $request, Application $app)
     {
         $searchValue = $request->get('searchValue');
+
+        $stat = new StatPageViews($app['db']);
+        $stat->saveSearchValue($app, $searchValue);
 
         try {
             $audio = new Audio($app);
